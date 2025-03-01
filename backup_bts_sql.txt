@@ -1,0 +1,84 @@
+-- Drop existing tables if they exist
+DROP TABLE IF EXISTS bug_comments CASCADE;
+DROP TABLE IF EXISTS bug_history CASCADE;
+DROP TABLE IF EXISTS bugs CASCADE;
+DROP TABLE IF EXISTS bug_categories CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- Create Users Table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user', -- 'admin' or 'user'
+    email VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert Sample Users
+INSERT INTO users (username, password, role, email) VALUES
+('admin', 'admin123', 'admin', 'admin@example.com'),
+('user1', 'user123', 'user', 'user1@example.com'),
+('user2', 'user123', 'user', 'user2@example.com');
+
+-- Create Bug Categories Table
+CREATE TABLE bug_categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Insert Sample Bug Categories
+INSERT INTO bug_categories (name) VALUES
+('UI/UX'),
+('Functionality'),
+('Performance'),
+('Security');
+
+-- Create Bugs Table
+CREATE TABLE bugs (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'Open', -- 'Open', 'In Progress', 'Closed'
+    priority VARCHAR(20) DEFAULT 'Medium', -- 'High', 'Medium', 'Low'
+    category_id INT REFERENCES bug_categories(id),
+    assigned_to INT REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert Sample Bugs
+INSERT INTO bugs (title, description, status, priority, category_id, assigned_to) VALUES
+('Login Page UI Issue', 'The login button is not aligned properly.', 'Open', 'High', 1, 2),
+('Performance Lag', 'The application slows down when loading large data.', 'In Progress', 'Medium', 3, 3),
+('Security Vulnerability', 'User data is not encrypted properly.', 'Open', 'High', 4, 1);
+
+-- Create Bug History Table
+CREATE TABLE bug_history (
+    id SERIAL PRIMARY KEY,
+    bug_id INT REFERENCES bugs(id),
+    change_type VARCHAR(100) NOT NULL, -- e.g., 'Status Change', 'Priority Change'
+    old_value TEXT,
+    new_value TEXT,
+    changed_by INT REFERENCES users(id), -- User who made the change
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert Sample Bug History
+INSERT INTO bug_history (bug_id, change_type, old_value, new_value, changed_by) VALUES
+(1, 'Status Change', 'Open', 'In Progress', 1),
+(2, 'Priority Change', 'Medium', 'High', 2);
+
+-- Create Bug Comments Table
+CREATE TABLE bug_comments (
+    id SERIAL PRIMARY KEY,
+    bug_id INT REFERENCES bugs(id),
+    user_id INT REFERENCES users(id),
+    comment TEXT NOT NULL,
+    commented_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert Sample Bug Comments
+INSERT INTO bug_comments (bug_id, user_id, comment) VALUES
+(1, 2, 'I will look into the UI issue.'),
+(2, 3, 'Performance optimization is in progress.');
