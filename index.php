@@ -1,6 +1,6 @@
 <?php
 // Database connection
-$db = pg_connect("host=localhost dbname=bug_tracking_system user=postgres password=root");
+$db = pg_connect("host=db.rjvjfpamhjrzpjwulbmf.supabase.co dbname=bug_tracking_system user=postgres password=postgres");
 
 if (!$db) {
     die("Error in connection: " . pg_last_error());
