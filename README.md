@@ -1,5 +1,3 @@
-markdown
-Copy
 # Bug Tracking System
 
 A simple Bug Tracking System built with PHP and PostgreSQL. This project helps teams track and manage software bugs efficiently. It includes features like user authentication, bug management, and a dashboard to track bug status.
@@ -101,7 +99,6 @@ Contact
 For any questions or feedback, feel free to reach out:
 
 Name: Sagar Saini
-
-Email: sagar@example.com
+Email: sainisagar2506@gmail.com
 GitHub: SAGAR97619
 
