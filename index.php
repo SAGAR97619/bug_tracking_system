@@ -179,7 +179,7 @@ if (!isset($_GET['action']) || $_GET['action'] == 'dashboard') {
                             </div>
                             <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
                         </form>
-                        <p class="mt-3 text-center"><a href="?action=register">Don't have an account? Register here</a></p>
+                        <!-- <p class="mt-3 text-center"><a href="?action=register">Don't have an account? Register here</a></p> --> 
                         <?php if (isset($error)) echo "<p class='text-danger text-center'>$error</p>"; ?>
                     </div>
                 </div>
